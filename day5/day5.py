@@ -24,14 +24,14 @@ for row in transposed_crates:
 with open('orders.txt', 'r') as file2:
     for line in file2:
         line = line.rstrip().split()
-        nums = [int(i) for i in line if i.isdigit()]
-        amount = nums[0]
-        start = nums[1] - 1
-        end = nums[2] - 1
+        amount, start, end = [int(i) for i in line if i.isdigit()]
+        # take care of off by 1 errors with list indexing
+        start -= 1
+        end -= 1
         crates_to_move = transposed_crates[start][-amount:]
+        del transposed_crates[start][-amount:]
         # next line needed for part 1, commented out for part 2
         # crates_to_move.reverse()
-        del transposed_crates[start][-amount:]
         transposed_crates[end].extend(crates_to_move)
 
 for crates in transposed_crates:
